@@ -4,29 +4,51 @@
 void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
-    PrintLine(TEXT("Welcome"));
-    PrintLine(TEXT("Guess the 4 letter word"));
-    PrintLine(TEXT("Press Enter to continue ..."));
 
-    InitGame();
+    SetUpGame();
+
+    PrintLine(TEXT("The hidden word is : %s. It is %i characters long"), *hiddenWord, hiddenWord.Len());
 }
 
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
 {
-    ClearScreen();
-
-    if (Input == hiddenWord) 
+    if (gameOver == true) 
     {
-        PrintLine(TEXT("You Win!!!"));
+        ClearScreen();
+        SetUpGame();
     }
     else 
-    {
-        PrintLine(TEXT("You Lose!!!"));
+    {        
+        if (Input == hiddenWord)
+        {
+            PrintLine(TEXT("You Win!!!"));
+            EndGame();
+        }
+        else
+        {
+            if (hiddenWord.Len() != Input.Len())
+            {
+                PrintLine(TEXT("Hidden word is %i letters! You Lose!"), hiddenWord.Len());
+                EndGame();
+            }           
+        }
     }
 }
 
-void UBullCowCartridge::InitGame() {
-    
-    hiddenWord = TEXT("cake");
+void UBullCowCartridge::SetUpGame() 
+{
+    PrintLine(TEXT("Welcome"));
+
+    gameOver = false;
+    hiddenWord = TEXT("cakes");
     lives = 3;
+
+    PrintLine(TEXT("Guess the %i letter word"), hiddenWord.Len());
+    PrintLine(TEXT("Type in your guess and press Enter to continue ..."));
+}
+
+void UBullCowCartridge::EndGame() 
+{
+    gameOver = true;
+    PrintLine(TEXT("Press Enter to play again"));
 }
