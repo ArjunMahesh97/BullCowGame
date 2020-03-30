@@ -29,22 +29,29 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
     {
         PrintLine(TEXT("You Win!!!"));
         EndGame();
+        return;
     }
-    else
+
+    if (hiddenWord.Len() != Guess.Len())
     {
-        if (--lives > 0)
-        {
-            if (hiddenWord.Len() != Guess.Len())
-            {
-                PrintLine(TEXT("Try again! You have %i lives remaining"), lives);
-            }
-        }
-        else
-        {
-            PrintLine(TEXT("You have no lives left! Game Over!"));
-            EndGame();
-        }
+        PrintLine(TEXT("The hidden word is %i letetrs long"), hiddenWord.Len());
+        PrintLine(TEXT("Try again! You have %i lives remaining"), lives);
+        return;
     }
+
+    PrintLine(TEXT("You have lost a life"));
+
+    if (--lives <= 0)
+    {
+        ClearScreen();
+        PrintLine(TEXT("You have no lives left"));
+        PrintLine(TEXT("The hidden word is : %s"), *hiddenWord);
+        EndGame();
+        return;
+    }
+
+    PrintLine(TEXT("Guess again! You have %i lives remaining"), lives);
+    
 }
 
 void UBullCowCartridge::SetUpGame() 
