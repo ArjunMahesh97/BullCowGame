@@ -39,6 +39,12 @@ void UBullCowCartridge::ProcessGuess(const FString& Guess)
         return;
     }
 
+    if (!IsIsogram(Guess))
+    {
+        PrintLine(TEXT("No repeating letters! Try again!"));
+        return;
+    }
+
     PrintLine(TEXT("You have lost a life"));
 
     if (--lives <= 0)
@@ -71,4 +77,9 @@ void UBullCowCartridge::EndGame()
 {
     gameOver = true;
     PrintLine(TEXT("Press Enter to play again"));
+}
+
+bool UBullCowCartridge::IsIsogram(FString word) const
+{
+    return true;
 }
